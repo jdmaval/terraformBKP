@@ -1,0 +1,127 @@
+#Define Resource Group
+
+variable "resource_group_name" {
+  default = "TerraformResourceGroup"
+}
+
+variable "resource_group_location" {
+  default = "eastus"
+}
+
+
+
+#Create Vnet
+
+variable "virtual_network_name" {
+    default = "myVnet"
+}
+variable "vnet_address_space" {
+    default = ["10.0.0.0/16"]
+}
+variable  "location"{
+    default  = "eastus"
+}
+
+
+
+
+
+#Create Subnet
+
+    variable "subnet_name"{
+        default = "mySubnet"
+    }
+
+    variable "address_prefixes"{
+        default  = ["10.0.1.0/24"]
+}
+
+
+
+
+#Create public IP
+
+variable "public_IP_name"{
+    default = "myPublicIP"
+}
+variable "allocation_method"{
+    default = "Dynamic"
+}
+
+
+
+
+
+
+#Create NGS and Rule
+
+variable "nsg_name"{
+default = "myNetworkSecurityGroup"
+}
+#rule on main file
+
+#Create Network INterface
+
+    variable "nic_name"{
+     default   = "myNIC"
+    }
+
+
+
+# Connect the security group to the network interface
+resource "azurerm_network_interface_security_group_association" "example" {
+    network_interface_id      = azurerm_network_interface.myterraformnic.id
+    network_security_group_id = azurerm_network_security_group.myterraformnsg.id
+}
+
+
+
+
+
+# Generate random text for a unique storage account name
+resource "random_id" "randomId" {
+    keepers = {
+        # Generate a new ID only when a new resource group is defined
+        resource_group = azurerm_resource_group.rg.name
+    }
+
+    byte_length = 8
+}
+
+
+
+
+# Create storage account for boot diagnostics
+
+
+variable "account_tier"{
+   default   = "Standard"
+   }
+
+variable "account_replication_type"{
+    default  = "LRS"
+    }
+
+
+
+
+
+#Create (and display) an SSH key
+
+variable "algorithm"{
+default = "RSA"
+}
+
+variable "rsa_bits"{
+ default = 4096
+}
+
+
+#Define Virtual Machine
+variable "vmname"{
+ default   = "terraformVM"
+}
+
+ variable "vmsize"{
+ default  = "Standard_B1ls"
+ }
